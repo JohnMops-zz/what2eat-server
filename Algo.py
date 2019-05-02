@@ -4,8 +4,6 @@ import threading
 
 class Algo():
 
-    #nextAtt= None;
-
     def __init__(self):
         print("init algo object")
         datasize = "1000data"  # fulldata || 1000data
@@ -66,7 +64,7 @@ class Algo():
     def getNumOfRelevantDishes(self):
         return self.NUMBER_OF_DISHES
 
-# this method calc which att will be ask next and update the global var 'nextAtt'
+# this method calc the next att that need to be ask and update the var 'nextAtt'
     def calcTheNextAtt(self):
 
         while (self.AreWeFinish() == False):
@@ -102,34 +100,38 @@ class Algo():
             self.indexAttWithMaxGini = self.giniRates.index(max(self.giniRates))
             self.attWithMaxGini = self.AttArr[self.indexAttWithMaxGini]
 
-            self.nextAtt = self.attWithMaxGini
-            return
+            return  #this return should return the ans if wefinsh or not
 
 
 # this method get the respond for the ask att
     def respon(self,answer):
+
+        self.NumberOfRelevantAtt = self.NumberOfRelevantAtt - 1
+
+        # the client can't ask the next att before this
+        # section finish to compute the respond to the last att
         self.lock.acquire()
 
+        # "i don't have" case
         if answer == "0":
-            print("algo:i dont have " + self.attWithMaxGini)
-            self.NumberOfRelevantAtt = self.NumberOfRelevantAtt - 1
+            print("algo update:NOT " + self.attWithMaxGini)
             # update the relevant dishes arr
             # this pip line: read-line-> split -> to int -> inverse 0>1 & 1>0
+            # (the inverse because its "i don't have" case)
             reverseRow = list(map((lambda x: 1 if x == 0 else 0),
                                   [int(x) for x in self.ReadSpecificLine(self.indexAttWithMaxGini, self.data_file).split(',')]))
             self.RC = self.AND(self.RC, reverseRow)
-            NUMBER_OF_DISHES = sum(self.RC)
 
-
+        # "i have" case
         if answer == "1":
-            print("algo:i have " + self.attWithMaxGini)
+            print("algo update:YES " + self.attWithMaxGini)
+            attRow = list(map(int, self.ReadSpecificLine(self.indexAttWithMaxGini, self.data_file).split(',')))
+            self.RC = self.AND(self.RC, attRow)
 
         # the section run after we update the arrays with the answer that we get from the client
-
+        self.NUMBER_OF_DISHES = sum(self.RC)
         self.calcTheNextAtt()
         self.lock.release()
 
-
-
     def getNextAtt(self):
-        return self.nextAtt;
+        return self.attWithMaxGini;

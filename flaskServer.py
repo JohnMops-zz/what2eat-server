@@ -28,6 +28,7 @@ def getYESorNO():
 @app.route('/get-next-att',methods=['GET'])
 def sendAtt():
     print("The server send:"+str(algo.getNextAtt()));
+    print(algo.getNumOfRelevantDishes())
     return jsonify(
         nextAtt=algo.getNextAtt(),
         numOfRelevantDishes=algo.getNumOfRelevantDishes()
@@ -37,5 +38,5 @@ def sendAtt():
 
 if __name__ == '__main__':
     app.debug = True
-    # app.run(host='10.100.102.2', port=5005)
-    app.run(host='10.200.203.231',port=5005)
+    app.run(host='10.100.102.2', port=5005)
+    #app.run(host='10.200.203.231',port=5005)
