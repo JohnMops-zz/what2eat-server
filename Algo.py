@@ -49,9 +49,11 @@ class Algo():
                 return line
         return "ERROR: LINE #" + str(lineNumber) + " DOESN'T FOUND"
 
+    #  NumOfRelevantDishes < DISHES_THRESHOLD
     def AreWeFinish(self):
         return True if sum(self.RC) <= self.DISHES_THRESHOLD else False
 
+    # AND operator that work with 2 arrays
     def AND(self,A, B):
         leng = len(A)
         for i in range(0, leng):
@@ -64,10 +66,11 @@ class Algo():
     def getNumOfRelevantDishes(self):
         return self.NUMBER_OF_DISHES
 
-# this method calc the next att that need to be ask and update the var 'nextAtt'
+    # this method calc the next att that need to be ask and update the var 'nextAtt'
+    # return 1 if the threshold reach, else 0
     def calcTheNextAtt(self):
 
-        while (self.AreWeFinish() == False):
+        if self.AreWeFinish() == False:
 
             # return for the file start
             self.data_file.seek(0)
@@ -100,10 +103,13 @@ class Algo():
             self.indexAttWithMaxGini = self.giniRates.index(max(self.giniRates))
             self.attWithMaxGini = self.AttArr[self.indexAttWithMaxGini]
 
-            return  #this return should return the ans if wefinsh or not
+            return 0
+        else:
+            return 1  # the num of dishes reach to the threshold
 
-
-# this method get the respond for the ask att
+    # this method get the respond for the "ask att" and update the RC & RR array.
+    # in addition make a call to 'calcTheNextAtt' method
+    # return 1 if the threshold reach, else 0
     def respon(self,answer):
 
         self.NumberOfRelevantAtt = self.NumberOfRelevantAtt - 1
@@ -130,8 +136,9 @@ class Algo():
 
         # the section run after we update the arrays with the answer that we get from the client
         self.NUMBER_OF_DISHES = sum(self.RC)
-        self.calcTheNextAtt()
+        areWeDone = self.calcTheNextAtt()
         self.lock.release()
+        return areWeDone
 
     def getNextAtt(self):
         return self.attWithMaxGini;

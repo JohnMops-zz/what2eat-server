@@ -22,8 +22,11 @@ def getYESorNO():
     res = json.loads(data)['res']
 
     print("server:call to algo.respon with:"+str(res))
-    algo.respon(res)
-    return "<h1>OK</h1>"
+    ans = algo.respon(res)
+    return jsonify(
+        AreWeFinsih=ans,
+        numOfRelevantDishes=algo.getNumOfRelevantDishes()
+        ) # return json
 
 @app.route('/get-next-att',methods=['GET'])
 def sendAtt():
