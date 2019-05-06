@@ -34,7 +34,8 @@ def sendAtt():
     print(algo.getNumOfRelevantDishes())
     return jsonify(
         nextAtt=algo.getNextAtt(),
-        numOfRelevantDishes=algo.getNumOfRelevantDishes()
+        numOfRelevantDishes=algo.getNumOfRelevantDishes(),
+        nextAttImage=algo.getNextAttImage()
         ) # return json
 
 

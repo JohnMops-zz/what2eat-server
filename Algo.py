@@ -1,5 +1,7 @@
 import csv
+import os
 import threading
+import glob
 
 
 class Algo():
@@ -141,4 +143,13 @@ class Algo():
         return areWeDone
 
     def getNextAtt(self):
-        return self.attWithMaxGini;
+        return self.attWithMaxGini
+    
+    def getNextAttImage(self):
+        path='./attImages/downloads/'
+        imagesNames=[os.path.basename(x) for x in glob.glob(path+self.attWithMaxGini+'/*')]
+        imagesPath=[path +s for s in imagesNames]
+        return imagesPath
+
+algo =Algo()
+print(algo.getNextAttImage())
