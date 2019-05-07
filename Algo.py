@@ -2,24 +2,26 @@ import csv
 import os
 import threading
 import glob
+from time import sleep
 
 
 class Algo():
 
     def __init__(self):
         print("init algo object")
-        datasize = "1000data"  # fulldata || 1000data
+        self.recNum=1000
+        datasize = str(self.recNum)+"data"  # fulldata || 1000data
         # TODO: write code for the case the file doesnt found
         self.data_file = open('./' + datasize + '/data.csv', newline='')
         self.attr_file = open('./' + datasize + '/attNames.csv')
         self.dishes_file = open('./' + datasize + '/DishesIds.csv')
 
-        self.AttArr = self.attr_file.readline().split(',')
-        self.DishesArr = self.dishes_file.readline().split(',')
+        self.attArr = self.attr_file.readline().split(',')
+        self.dishesArr = self.dishes_file.readline().split(',')
 
         self.DISHES_THRESHOLD = 10
-        self.NUMBER_OF_ATTR = len(self.AttArr)
-        self.NUMBER_OF_DISHES = len(self.DishesArr)
+        self.NUMBER_OF_ATTR = len(self.attArr)
+        self.NUMBER_OF_DISHES = len(self.dishesArr)
         self.lock = threading.Lock()
 
         # init empty gini-rates list with none
@@ -33,7 +35,8 @@ class Algo():
 
         self.NumberOfRelevantAtt = self.NUMBER_OF_ATTR
 
-        self.reader = csv.reader(self.data_file, delimiter=',', quotechar='|')
+        self.data_reader = csv.reader(self.data_file, delimiter=',', quotechar='|')
+
 
         self.indexAttWithMaxGini=-1
 
@@ -71,14 +74,12 @@ class Algo():
     # this method calc the next att that need to be ask and update the var 'nextAtt'
     # return 1 if the threshold reach, else 0
     def calcTheNextAtt(self):
-
         if self.AreWeFinish() == False:
-
             # return for the file start
             self.data_file.seek(0)
 
             i = 0
-            for row in self.reader:
+            for row in self.data_reader:
                 # If the Row in relevant
                 if self.RR[i]:
                     yesCount = 0
@@ -103,7 +104,7 @@ class Algo():
             # TODO: random attr choices effected by this line
             # return first instance of the largest valued
             self.indexAttWithMaxGini = self.giniRates.index(max(self.giniRates))
-            self.attWithMaxGini = self.AttArr[self.indexAttWithMaxGini]
+            self.attWithMaxGini = self.attArr[self.indexAttWithMaxGini]
 
             return 0
         else:
@@ -148,8 +149,43 @@ class Algo():
     def getNextAttImage(self):
         path='./attImages/downloads/'
         imagesNames=[os.path.basename(x) for x in glob.glob(path+self.attWithMaxGini+'/*')]
-        imagesPath=[path +s for s in imagesNames]
+        imagesPath=[path + s for s in imagesNames]
         return imagesPath
 
+    def getRecipesId(self):
+        recIds=[]
+        for i in range(self.recNum):
+            if(self.RC[i]):
+                recIds.append(self.dishesArr[i])
+        return recIds
+    #returns a dictionary of:id, title, desc,preptime,level,imageurl
+    
+    def getRecipesInfo(self):
+        recipesInfo=[]
+        from recipe_scrapers import scrape_me
+        recIds=self.getRecipesId()
+        print(recIds)
+        for id in recIds:
+            jsonRec = {}
+            url='https://www.allrecipes.com/recipe/'+id
+            print(url)
+            scraper = scrape_me(url)
+            sleep(1)
+            jsonRec['id']=id
+            jsonRec['title']=scraper.title()
+            jsonRec['desc']=scraper.description()
+            jsonRec['imageurl']=scraper.imageurl()
+            recipesInfo.append(jsonRec)
+        return recipesInfo
+
+
+
+
 algo =Algo()
-print(algo.getNextAttImage())
+
+while True:
+    print(algo.getNumOfRelevantDishes())
+    if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
+        print(algo.getRecipesInfo())
+        break
+
