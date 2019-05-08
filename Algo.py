@@ -158,34 +158,38 @@ class Algo():
             if(self.RC[i]):
                 recIds.append(self.dishesArr[i])
         return recIds
-    #returns a dictionary of:id, title, desc,preptime,level,imageurl
-    
-    def getRecipesInfo(self):
-        recipesInfo=[]
-        from recipe_scrapers import scrape_me
-        recIds=self.getRecipesId()
-        print(recIds)
-        for id in recIds:
-            jsonRec = {}
-            url='https://www.allrecipes.com/recipe/'+id
-            print(url)
-            scraper = scrape_me(url)
-            sleep(1)
-            jsonRec['id']=id
-            jsonRec['title']=scraper.title()
-            jsonRec['desc']=scraper.description()
-            jsonRec['imageurl']=scraper.imageurl()
-            recipesInfo.append(jsonRec)
-        return recipesInfo
+
+    def getRecipesUrls(self):
+        recids=self.getRecipesId()
+        url = 'https://www.allrecipes.com/recipe/'
+        return [url+id for id in recids]
+
+    # #returns a dictionary of:id, title, desc,preptime,level,imageurl
+    # def getRecipesInfo(self):
+    #     recipesInfo=[]
+    #     from recipe_scrapers import scrape_me
+    #     recIds=self.getRecipesId()
+    #     print(recIds)
+    #     for id in recIds:
+    #         jsonRec = {}
+    #         url='https://www.allrecipes.com/recipe/'+id
+    #         print(url)
+    #         scraper = scrape_me(url)
+    #         sleep(1)
+    #         jsonRec['id']=id
+    #         jsonRec['title']=scraper.title()
+    #         jsonRec['desc']=scraper.description()
+    #         jsonRec['imageurl']=scraper.imageurl()
+    #         recipesInfo.append(jsonRec)
+    #     return recipesInfo
 
 
-
-
-algo =Algo()
-
-while True:
-    print(algo.getNumOfRelevantDishes())
-    if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
-        print(algo.getRecipesInfo())
-        break
+# test the algo
+# algo =Algo()
+#
+# while True:
+#     print(algo.getNumOfRelevantDishes())
+#     if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
+#         print(algo.getRecipesUrl())
+#         break
 

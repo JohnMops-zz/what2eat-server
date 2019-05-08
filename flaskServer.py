@@ -30,7 +30,7 @@ def getYESorNO():
 
 @app.route('/get-next-att',methods=['GET'])
 def sendAtt():
-    print("The server send:"+str(algo.getNextAtt()));
+    print("The server send:"+str(algo.getNextAtt()))
     print(algo.getNumOfRelevantDishes())
     return jsonify(
         nextAtt=algo.getNextAtt(),
@@ -38,6 +38,11 @@ def sendAtt():
         nextAttImage=algo.getNextAttImage()
         ) # return json
 
+@app.route('/get-rec-urls',methods=['GET'])
+def getRecUrls():
+    return jsonify(
+        RecipesUrls=algo.getRecipesUrls()
+    )
 
 
 if __name__ == '__main__':
