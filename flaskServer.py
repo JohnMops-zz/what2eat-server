@@ -41,9 +41,14 @@ def sendAtt():
 @app.route('/get-rec-urls',methods=['GET'])
 def getRecUrls():
     return jsonify(
-        RecipesUrls=algo.getRecipesUrls()
+        recipesUrls=algo.getRecipesUrls()
     )
 
+@app.route('/get-preview-info',methods=['GET'])
+def getPreviewInfo():
+    return jsonify(
+        recPreviewInfo=algo.getPreviewInfo()
+    )
 
 if __name__ == '__main__':
     app.debug = True
