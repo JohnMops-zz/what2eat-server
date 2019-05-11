@@ -166,9 +166,10 @@ class Algo():
         return [url+id for id in recids]
 
     def getPreviewInfo(self):
-        # recIds=self.getRecipesId()#TODO change to real result list
-        recIds = ["6690","6691","6692","6693","6694","6695","6696","6697","6698","6699"]
+        recIds = ["6690", "6691", "6692", "6693", "6694", "6695", "6696", "6697", "6698", "6699"]#TODO change to real result list
+        # recIds=self.getRecipesId()
         fn='recPreviewMoke.json' #TODO change to real file name recPreview.json
+        # fn='recPreview.json'
         relJson=[]
         with open(fn,'r') as recPreview:
             for rec in recPreview:
