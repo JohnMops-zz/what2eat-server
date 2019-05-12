@@ -148,10 +148,12 @@ class Algo():
         return self.attWithMaxGini
     
     def getNextAttImage(self):
-        path='./attImages/downloads/'
-        imagesNames=[os.path.basename(x) for x in glob.glob(path+self.attWithMaxGini+'/*')]
-        imagesPath=[path + s for s in imagesNames]
-        return imagesPath
+        nextAtt=self.getNextAtt()
+        urlsFile='imagesUrl.json'
+        with open(urlsFile,'r') as imagesFile:
+            urls=json.load(imagesFile)
+            return(urls[nextAtt])
+
 
     def getRecipesId(self):
         recIds=[]
@@ -202,12 +204,12 @@ class Algo():
 
 
 # test the algo
-# algo =Algo()
-# print(algo.getPreviewInfo())
+algo =Algo()
+# algo.getNextAttImage()
 #
-# while True:
-#     print(algo.getNumOfRelevantDishes())
-#     if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
-#         print(algo.getRecipesUrl())
-#         break
+while True:
+    print(algo.getNumOfRelevantDishes())
+    if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
+        print(algo.getNextAttImage())
+        break
 

@@ -44,4 +44,24 @@ def scrapeit():
             print(jsonRec)
             rec_i = rec_i + 1
 
-scrapeit()
+
+def ingImageUrl():
+    googres = google_images_download.googleimagesdownload()
+    fn='ingredients.txt'
+    # fn='ingredientsMoke.txt'
+    num_ing = sum(1 for line in open(fn))
+    ing_i = 1
+    jsonIng = {}
+    with open(fn, 'r') as ingFile:
+        for ing in ingFile:
+            ing=ing[:-1]
+            print("({ing_i}/{num_ing}) Working on: {ing}".format(ing_i=ing_i, num_ing=num_ing, ing=ing))
+            images = googres.download(
+                {'keywords': ing, 'limit': '1', 'no_download': 'True', 'silent_mode': 'True'})
+            print(images)
+            jsonIng[ing]=images[0][ing][0]
+            ing_i+=1
+    with open('imagesUrl.json','a+') as imageFile:
+        imageFile.write(json.dumps(jsonIng))
+# scrapeit()
+ingImageUrl()
