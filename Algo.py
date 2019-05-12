@@ -204,12 +204,12 @@ class Algo():
 
 
 # test the algo
-algo =Algo()
+# algo =Algo()
 # algo.getNextAttImage()
 #
-while True:
-    print(algo.getNumOfRelevantDishes())
-    if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
-        print(algo.getNextAttImage())
-        break
+# while True:
+#     print(algo.getNumOfRelevantDishes())
+#     print(algo.getNextAttImage())
+#     if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
+#         break
 
