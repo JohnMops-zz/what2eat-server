@@ -21,7 +21,7 @@ class Algo():
         self.data_file = open(os.path.join(self.__location__, datasize+'data.csv'), newline='')
         self.attr_file = open(os.path.join(self.__location__, datasize+'attNames.csv'))
         self.dishes_file = open(os.path.join(self.__location__, datasize+'DishesIds.csv'))
-        self.preview_file = open(os.path.join(self.__location__, 'recPreview.json'))
+        self.preview_file = open(os.path.join(self.__location__, 'recPreview.json'),'r', encoding='utf-8')
 
         self.attArr = self.attr_file.readline().split(',')
         self.dishesArr = self.dishes_file.readline().split(',')

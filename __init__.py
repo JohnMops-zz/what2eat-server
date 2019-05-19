@@ -27,9 +27,9 @@ def restart():
 @app.route('/send-yes-or-no',methods=['POST'])
 def getYESorNO():
     data = request.data.decode('utf-8')
-    res = json.loads(data)['res']
 
-    print("server:call to algo.respon with:"+str(res))
+    res = json.loads(data)['res']
+    print("server: call to algo.respon with:"+str(res))
     ans = algo.respon(res)
     return jsonify(
         AreWeFinsih=ans,
