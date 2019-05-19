@@ -17,9 +17,11 @@ class Algo():
 
         self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        # print(self.__location__)
         self.data_file = open(os.path.join(self.__location__, datasize+'data.csv'), newline='')
         self.attr_file = open(os.path.join(self.__location__, datasize+'attNames.csv'))
         self.dishes_file = open(os.path.join(self.__location__, datasize+'DishesIds.csv'))
+        self.preview_file = open(os.path.join(self.__location__, 'recPreview.json'))
 
         self.attArr = self.attr_file.readline().split(',')
         self.dishesArr = self.dishes_file.readline().split(',')
@@ -52,7 +54,7 @@ class Algo():
     def calcGini(self,no, yes):
         return 1 - (yes / self.NUMBER_OF_DISHES) ** 2 - (no / self.NUMBER_OF_DISHES) ** 2
 
-    def ReadSpecificLine(self,lineNumber, file):
+    def readSpecificLine(self, lineNumber, file):
         file.seek(0)
         for i, line in enumerate(file):
             if i == lineNumber:
@@ -60,7 +62,7 @@ class Algo():
         return "ERROR: LINE #" + str(lineNumber) + " DOESN'T FOUND"
 
     #  NumOfRelevantDishes < DISHES_THRESHOLD
-    def AreWeFinish(self):
+    def areWeFinish(self):
         return True if sum(self.RC) <= self.DISHES_THRESHOLD else False
 
     # AND operator that work with 2 arrays
@@ -79,7 +81,7 @@ class Algo():
     # this method calc the next att that need to be ask and update the var 'nextAtt'
     # return 1 if the threshold reach, else 0
     def calcTheNextAtt(self):
-        if self.AreWeFinish() == False:
+        if self.areWeFinish() == False:
             # return for the file start
             self.data_file.seek(0)
 
@@ -133,13 +135,13 @@ class Algo():
             # this pip line: read-line-> split -> to int -> inverse 0>1 & 1>0
             # (the inverse because its "i don't have" case)
             reverseRow = list(map((lambda x: 1 if x == 0 else 0),
-                                  [int(x) for x in self.ReadSpecificLine(self.indexAttWithMaxGini, self.data_file).split(',')]))
+                                  [int(x) for x in self.readSpecificLine(self.indexAttWithMaxGini, self.data_file).split(',')]))
             self.RC = self.AND(self.RC, reverseRow)
 
         # "i have" case
         if answer == "1":
             print("algo update:YES " + self.attWithMaxGini)
-            attRow = list(map(int, self.ReadSpecificLine(self.indexAttWithMaxGini, self.data_file).split(',')))
+            attRow = list(map(int, self.readSpecificLine(self.indexAttWithMaxGini, self.data_file).split(',')))
             self.RC = self.AND(self.RC, attRow)
 
         # the section run after we update the arrays with the answer that we get from the client
@@ -170,19 +172,18 @@ class Algo():
         return [url+id for id in recids]
 
     def getPreviewInfo(self):
+        #
+        if not self.areWeFinish():
+            return []
         # recIds = ["6690", "6691", "6692", "6693", "6694", "6695", "6696", "6697", "6698", "6699"]
         recIds=self.getRecipesId()
-        # fn='recPreviewMoke.json'
-        fn='recPreview.json'
         relJson=[]
-        dirpath = '/var/www/flaskapps/what2eat_server/'
-        with open(dirpath+fn,'r') as recPreview:
-            for rec in recPreview:
-                recipe=json.loads(rec)
-                rId = recipe['id']
-                for id in recIds:
-                    if str(rId)==id:
-                        relJson.append(recipe)
+        for rec in self.preview_file:
+            recipe=json.loads(rec)
+            rId = recipe['id']
+            for id in recIds:
+                if str(rId)==id:
+                    relJson.append(recipe)
         return relJson
 
 
@@ -207,12 +208,11 @@ class Algo():
 
 
 # test the algo
-algo =Algo()
-# algo.getNextAttImage()
-#
+# algo =Algo()
 # while True:
 #     print(algo.getNumOfRelevantDishes())
-#     print(algo.getNextAttImage())
 #     if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
 #         break
+# print(algo.getPreviewInfo())
+
 
