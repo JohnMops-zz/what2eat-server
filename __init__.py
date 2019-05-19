@@ -8,8 +8,8 @@ import json
 from .Algo import Algo
 
 app = Flask('what2eat')
-
 global algo
+
 
 # Decorator defines a route
 # http://localhost:5000/
@@ -19,8 +19,8 @@ def index():
 
 @app.route('/restartAlgo',methods=['GET'])
 def restart():
+    global algo
     algo = Algo()
-
 
 @app.route('/send-yes-or-no',methods=['POST'])
 def getYESorNO():
