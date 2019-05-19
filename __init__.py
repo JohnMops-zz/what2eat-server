@@ -9,6 +9,7 @@ from .Algo import Algo
 
 app = Flask('what2eat')
 global algo
+algo = Algo()
 
 
 # Decorator defines a route
