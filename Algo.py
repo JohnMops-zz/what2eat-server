@@ -207,13 +207,13 @@ class Algo():
 
 
 # test the algo
-algo =Algo()
-while True:
-    while True:
-        print(algo.getNumOfRelevantDishes())
-        if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
-            break
-    print(algo.getPreviewInfo())
-    algo.__init__()
+# algo =Algo()
+# while True:
+#     while True:
+#         print(algo.getNumOfRelevantDishes())
+#         if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
+#             break
+#     print(algo.getPreviewInfo())
+#     algo.__init__()
 
 
