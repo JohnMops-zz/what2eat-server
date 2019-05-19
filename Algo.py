@@ -34,11 +34,7 @@ class Algo():
         # init empty gini-rates list with none
         self.giniRates = [None] * self.NUMBER_OF_ATTR
 
-        # init Relevant Rows arr
-        self.RR = [1] * self.NUMBER_OF_ATTR
-
-        # init Relevant columns arr
-        self.RC = [1] * self.NUMBER_OF_DISHES
+        self.initRRRC()
 
         self.NumberOfRelevantAtt = self.NUMBER_OF_ATTR
 
@@ -50,6 +46,13 @@ class Algo():
         self.lock.acquire()
         self.calcTheNextAtt() # this function update the 'nextAtt' var
         self.lock.release()
+
+    def initRRRC(self):
+        # init Relevant Rows arr
+        self.RR = [1] * self.NUMBER_OF_ATTR
+
+        # init Relevant columns arr
+        self.RC = [1] * self.NUMBER_OF_DISHES
 
     def calcGini(self,no, yes):
         return 1 - (yes / self.NUMBER_OF_DISHES) ** 2 - (no / self.NUMBER_OF_DISHES) ** 2

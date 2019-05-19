@@ -18,10 +18,10 @@ algo = Algo()
 def index():
     return "Hello World!"
 
-@app.route('/restartAlgo',methods=['GET'])
+@app.route('/restart-algo',methods=['GET'])
 def restart():
-    global algo
-    algo = Algo()
+    algo.initRRRC()
+    return ""
 
 @app.route('/send-yes-or-no',methods=['POST'])
 def getYESorNO():
@@ -37,7 +37,7 @@ def getYESorNO():
 
 @app.route('/get-next-att',methods=['GET'])
 def sendAtt():
-    print("The server send:"+str(algo.getNextAtt()))
+    print("The server send: "+str(algo.getNextAtt()))
     print(algo.getNumOfRelevantDishes())
     return jsonify(
         nextAtt=algo.getNextAtt(),
