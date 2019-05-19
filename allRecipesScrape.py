@@ -57,11 +57,11 @@ def ingImageUrl():
             ing=ing[:-1]
             print("({ing_i}/{num_ing}) Working on: {ing}".format(ing_i=ing_i, num_ing=num_ing, ing=ing))
             images = googres.download(
-                {'keywords': ing, 'limit': '1', 'no_download': 'True', 'silent_mode': 'True'})
+                {'keywords': ing, 'limit': '1', 'no_download': 'True', 'silent_mode': 'True','size':'medium'})
             print(images)
             jsonIng[ing]=images[0][ing][0]
             ing_i+=1
-    with open('imagesUrl.json','a+') as imageFile:
-        imageFile.write(json.dumps(jsonIng))
+            with open('smallImagesUrl.json','w') as imageFile:
+                imageFile.write(json.dumps(jsonIng))
 # scrapeit()
 ingImageUrl()

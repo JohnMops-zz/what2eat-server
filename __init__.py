@@ -1,9 +1,11 @@
+import sys
+import os
+
 from flask import Flask, request, jsonify
 
 import json
-from Algo import Algo
 
-
+from .Algo import Algo
 
 app = Flask('what2eat')
 
@@ -14,7 +16,7 @@ algo =Algo()
 # http://localhost:5000/
 @app.route('/')
 def index():
-    return "Hello Wrld!"
+    return "Hello World!"
 
 @app.route('/send-yes-or-no',methods=['POST'])
 def getYESorNO():
@@ -35,7 +37,7 @@ def sendAtt():
     return jsonify(
         nextAtt=algo.getNextAtt(),
         numOfRelevantDishes=algo.getNumOfRelevantDishes(),
-        nextAttImage=algo.getNextAttImage()
+        nextAttImage=algo.getAttImage()
         ) # return json
 
 @app.route('/get-rec-urls',methods=['GET'])

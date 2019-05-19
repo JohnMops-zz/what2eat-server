@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+import sys
 import threading
 import glob
 from time import sleep
@@ -9,13 +10,16 @@ from time import sleep
 class Algo():
 
     def __init__(self):
-        print("init algo object")
+        # print("init algo object")
         self.recNum=1000
-        datasize = str(self.recNum)+"data"  # fulldata || 1000data
+        datasize = str(self.recNum)+"data/"  # fulldata || 1000data
         # TODO: write code for the case the file doesnt found
-        self.data_file = open('./' + datasize + '/data.csv', newline='')
-        self.attr_file = open('./' + datasize + '/attNames.csv')
-        self.dishes_file = open('./' + datasize + '/DishesIds.csv')
+
+        self.__location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        self.data_file = open(os.path.join(self.__location__, datasize+'data.csv'), newline='')
+        self.attr_file = open(os.path.join(self.__location__, datasize+'attNames.csv'))
+        self.dishes_file = open(os.path.join(self.__location__, datasize+'DishesIds.csv'))
 
         self.attArr = self.attr_file.readline().split(',')
         self.dishesArr = self.dishes_file.readline().split(',')
@@ -146,14 +150,12 @@ class Algo():
 
     def getNextAtt(self):
         return self.attWithMaxGini
-    
-    def getNextAttImage(self):
-        nextAtt=self.getNextAtt()
-        urlsFile='imagesUrl.json'
-        with open(urlsFile,'r') as imagesFile:
-            urls=json.load(imagesFile)
-            return(urls[nextAtt])
 
+    def getAttImage(self):
+        urlsFile='imagesUrl.json'
+        with open(os.path.join(self.__location__,urlsFile),'r') as imagesFile:
+            urls=json.load(imagesFile)
+            return(urls[self.attWithMaxGini])
 
     def getRecipesId(self):
         recIds=[]
@@ -168,12 +170,13 @@ class Algo():
         return [url+id for id in recids]
 
     def getPreviewInfo(self):
-        recIds = ["6690", "6691", "6692", "6693", "6694", "6695", "6696", "6697", "6698", "6699"]#TODO change to real result list
-        # recIds=self.getRecipesId()
-        fn='recPreviewMoke.json' #TODO change to real file name recPreview.json
-        # fn='recPreview.json'
+        # recIds = ["6690", "6691", "6692", "6693", "6694", "6695", "6696", "6697", "6698", "6699"]
+        recIds=self.getRecipesId()
+        # fn='recPreviewMoke.json'
+        fn='recPreview.json'
         relJson=[]
-        with open(fn,'r') as recPreview:
+        dirpath = '/var/www/flaskapps/what2eat_server/'
+        with open(dirpath+fn,'r') as recPreview:
             for rec in recPreview:
                 recipe=json.loads(rec)
                 rId = recipe['id']
@@ -204,7 +207,7 @@ class Algo():
 
 
 # test the algo
-# algo =Algo()
+algo =Algo()
 # algo.getNextAttImage()
 #
 # while True:
