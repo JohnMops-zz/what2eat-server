@@ -20,8 +20,7 @@ def index():
 
 @app.route('/restart-algo',methods=['GET'])
 def restart():
-    global algo
-    algo = Algo()
+    algo.__init__()
     return ""
 
 @app.route('/send-yes-or-no',methods=['POST'])
