@@ -153,7 +153,7 @@ class Algo():
         return self.attWithMaxGini
 
     def getAttImage(self):
-        urlsFile='imagesUrl.json'
+        urlsFile='smallImagesUrl.json'
         with open(os.path.join(self.__location__,urlsFile),'r') as imagesFile:
             urls=json.load(imagesFile)
             return(urls[self.attWithMaxGini])
