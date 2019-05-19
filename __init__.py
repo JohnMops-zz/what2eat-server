@@ -10,13 +10,17 @@ from .Algo import Algo
 app = Flask('what2eat')
 
 global algo
-algo =Algo()
 
 # Decorator defines a route
 # http://localhost:5000/
 @app.route('/')
 def index():
     return "Hello World!"
+
+@app.route('/restartAlgo',methods=['GET'])
+def restart():
+    algo = Algo()
+
 
 @app.route('/send-yes-or-no',methods=['POST'])
 def getYESorNO():
