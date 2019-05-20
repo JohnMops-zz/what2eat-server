@@ -20,7 +20,8 @@ def index():
 
 @app.route('/restart-algo',methods=['GET'])
 def restart():
-    global algo
+    global algo #global algo in order to refer to the global var and not a local one
+    del algo
     algo = Algo()
     return ""
 
