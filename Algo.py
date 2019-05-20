@@ -17,7 +17,7 @@ class Algo():
 
         self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        # print(self.__location__)
+
         self.data_file = open(os.path.join(self.__location__, datasize+'data.csv'), newline='')
         self.attr_file = open(os.path.join(self.__location__, datasize+'attNames.csv'))
         self.dishes_file = open(os.path.join(self.__location__, datasize+'DishesIds.csv'))

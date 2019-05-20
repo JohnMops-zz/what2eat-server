@@ -1,13 +1,13 @@
 import sys
 import os
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 import json
 
 from .Algo import Algo
 
-app = Flask('what2eat')
+app = Flask(__name__)
 global algo
 algo = Algo()
 
@@ -16,7 +16,7 @@ algo = Algo()
 # http://localhost:5000/
 @app.route('/')
 def index():
-    return "Hello World!"
+    return render_template('page.html')
 
 @app.route('/restart-algo',methods=['GET'])
 def restart():
@@ -59,6 +59,5 @@ def getPreviewInfo():
     )
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(host='127.0.0.1', port=5005)
+    app.run(host='127.0.0.1',port='80')
     # app.run(host='10.200.203.231',port=5005)

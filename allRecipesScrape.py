@@ -61,7 +61,7 @@ def ingImageUrl():
             print(images)
             jsonIng[ing]=images[0][ing][0]
             ing_i+=1
-            with open('smallImagesUrl.json','w') as imageFile:
+            with open('smallImagesUrl1.json','a') as imageFile:
                 imageFile.write(json.dumps(jsonIng))
 # scrapeit()
 ingImageUrl()
