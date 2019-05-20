@@ -12,11 +12,9 @@ global algo
 algo = Algo()
 
 
-# Decorator defines a route
-# http://localhost:5000/
 @app.route('/')
 def index():
-    return render_template('page.html')
+      return render_template('page.html')
 
 @app.route('/restart-algo',methods=['GET'])
 def restart():
@@ -33,7 +31,7 @@ def getYESorNO():
     print("server: call to algo.respon with:"+str(res))
     ans = algo.respon(res)
     return jsonify(
-        AreWeFinsih=ans,
+        areWeFinish=ans,
         numOfRelevantDishes=algo.getNumOfRelevantDishes()
         ) # return json
 
@@ -60,5 +58,6 @@ def getPreviewInfo():
     )
 
 if __name__ == '__main__':
+
     app.run(host='127.0.0.1',port='80')
     # app.run(host='10.200.203.231',port=5005)

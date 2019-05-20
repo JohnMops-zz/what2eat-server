@@ -21,7 +21,7 @@ class Algo():
         self.data_file = open(os.path.join(self.__location__, datasize+'data.csv'), newline='')
         self.attr_file = open(os.path.join(self.__location__, datasize+'attNames.csv'))
         self.dishes_file = open(os.path.join(self.__location__, datasize+'DishesIds.csv'))
-        self.preview_file = open(os.path.join(self.__location__, 'recPreview.json'),'r', encoding='utf-8')
+        self.preview_file = open(os.path.join(self.__location__, 'recPreview.json'), encoding='utf-8')
 
         self.attArr = self.attr_file.readline().split(',')
         self.dishesArr = self.dishes_file.readline().split(',')
@@ -42,7 +42,6 @@ class Algo():
         self.NumberOfRelevantAtt = self.NUMBER_OF_ATTR
 
         self.data_reader = csv.reader(self.data_file, delimiter=',', quotechar='|')
-
 
         self.indexAttWithMaxGini=-1
 
@@ -165,55 +164,18 @@ class Algo():
                 recIds.append(self.dishesArr[i])
         return recIds
 
-    def getRecipesUrls(self):
-        recids=self.getRecipesId()
-        url = 'https://www.allrecipes.com/recipe/'
-        return [url+id for id in recids]
-
     def getPreviewInfo(self):
-        #
+        #if we are not finish return an empty list
         if not self.areWeFinish():
             return []
-        # recIds = ["6690", "6691", "6692", "6693", "6694", "6695", "6696", "6697", "6698", "6699"]
+        allRecipeURL='https://www.allrecipes.com/recipe/'
         recIds=self.getRecipesId()
         relJson=[]
         for rec in self.preview_file:
             recipe=json.loads(rec)
-            rId = recipe['id']
+            rid = str(recipe['id'])
+            recipe['recipeURL']=allRecipeURL+rid
             for id in recIds:
-                if str(rId)==id:
+                if rid==id:
                     relJson.append(recipe)
         return relJson
-
-
-    # #returns a dictionary of:id, title, desc,preptime,level,imageurl
-    # def getRecipesInfo(self):
-    #     recipesInfo=[]
-    #     from recipe_scrapers import scrape_me
-    #     recIds=self.getRecipesId()
-    #     print(recIds)
-    #     for id in recIds:
-    #         jsonRec = {}
-    #         url='https://www.allrecipes.com/recipe/'+id
-    #         print(url)
-    #         scraper = scrape_me(url)
-    #         sleep(1)
-    #         jsonRec['id']=id
-    #         jsonRec['title']=scraper.title()
-    #         jsonRec['desc']=scraper.description()
-    #         jsonRec['imageurl']=scraper.imageurl()
-    #         recipesInfo.append(jsonRec)
-    #     return recipesInfo
-
-
-# test the algo
-# algo =Algo()
-# while True:
-#     while True:
-#         print(algo.getNumOfRelevantDishes())
-#         if(algo.respon(input('got '+algo.getNextAtt()+'?\n'))):
-#             break
-#     print(algo.getPreviewInfo())
-#     algo.__init__()
-
-

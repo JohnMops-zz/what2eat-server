@@ -63,5 +63,10 @@ def ingImageUrl():
             ing_i+=1
             with open('smallImagesUrl1.json','a') as imageFile:
                 imageFile.write(json.dumps(jsonIng))
+
+def addRecURL():
+
+
+
 # scrapeit()
-ingImageUrl()
+# ingImageUrl()
