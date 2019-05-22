@@ -14,20 +14,30 @@ yes = json.dumps({"res": "1"})
 no = json.dumps({"res": "0"})
 
 
-def testURL():
-    requests.get(local + restart)
-    reslist = [yes,no,no,no,no,no,yes]  # responses list can be changed to test different scenarios
-    r=reslist[0]
-    ryesNo = requests.post(local + yesNo, r).json()
+def testURL(machine):
+    if machine == 'local':
+        machine = local
+    else:
+        if machine == 'server':
+            machine = server
+
+    requests.get(machine + restart)
+    reslist = [yes, no, no, no, no, no, yes]  # responses list can be changed to test different scenarios
+    r = reslist[0]
+    print(requests.get(machine + nextAtt).json())
+    ryesNo = requests.post(machine + yesNo, r).json()
+
     print(ryesNo)
     for r in reslist[1:]:
         while ryesNo['areWeFinish'] == 0:
-            print(requests.get(local + nextAtt).json())
-            ryesNo = requests.post(local + yesNo, yes).json()
+            print(requests.get(machine + nextAtt).json())
+            ryesNo = requests.post(machine + yesNo, yes).json()
             print(ryesNo)
-        rpreview = requests.get(local + preview).json()
+            sleep(3)
+        rpreview = requests.get(machine + preview).json()
         print(rpreview)
         break
+
 
 def testAlgoWithNoQuestions():
     reslist = ['1', '0', '0', '0', '0', '0', '1']  # responses list can be changed to test different scenarios
@@ -38,7 +48,7 @@ def testAlgoWithNoQuestions():
     print(algo.getNextAtt())
     res = algo.respon(r)
     for r in reslist[1:]:  # starts the responses list from the 2nd position
-        while not res: # while the response is that we are not finished
+        while not res:  # while the response is that we are not finished
             print(r)
             print(algo.getNextAtt())
             print(algo.getNumOfRelevantDishes())
@@ -58,6 +68,6 @@ def testAlgoWithQuestions():
         algo = Algo()
 
 
-testURL()
+testURL('server') # choose if you want server or local machine
 # testAlgoWithQuestions()
-testAlgoWithNoQuestions()
+# testAlgoWithNoQuestions()
