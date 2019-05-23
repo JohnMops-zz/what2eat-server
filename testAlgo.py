@@ -33,7 +33,7 @@ def testURL(machine):
             print(requests.get(machine + nextAtt).json())
             ryesNo = requests.post(machine + yesNo, yes).json()
             print(ryesNo)
-            sleep(3)
+
         rpreview = requests.get(machine + preview).json()
         print(rpreview)
         break
@@ -43,13 +43,11 @@ def testAlgoWithNoQuestions():
     reslist = ['1', '0', '0', '0', '0', '0', '1']  # responses list can be changed to test different scenarios
     algo = Algo()
     r = reslist[0]  # init r to the first response
-    print(r)
     print(algo.getNumOfRelevantDishes())
     print(algo.getNextAtt())
     res = algo.respon(r)
     for r in reslist[1:]:  # starts the responses list from the 2nd position
         while not res:  # while the response is that we are not finished
-            print(r)
             print(algo.getNextAtt())
             print(algo.getNumOfRelevantDishes())
             res = algo.respon(r)
@@ -69,5 +67,5 @@ def testAlgoWithQuestions():
 
 
 testURL('server') # choose if you want server or local machine
+testAlgoWithNoQuestions()
 # testAlgoWithQuestions()
-# testAlgoWithNoQuestions()

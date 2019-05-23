@@ -60,7 +60,7 @@ class Algo():
         return "ERROR: LINE #" + str(lineNumber) + " DOESN'T FOUND"
 
     #  NumOfRelevantDishes < DISHES_THRESHOLD
-    def areWeFinish(self):
+    def areWeDone(self):
         return True if sum(self.RC) <= self.DISHES_THRESHOLD else False
 
     # AND operator that work with 2 arrays
@@ -79,7 +79,7 @@ class Algo():
     # this method calc the next att that need to be ask and update the var 'nextAtt'
     # return 1 if the threshold reach, else 0
     def calcTheNextAtt(self):
-        if self.areWeFinish() == False:
+        if self.areWeDone() == False:
             # return for the file start
             self.data_file.seek(0)
 
@@ -166,7 +166,7 @@ class Algo():
 
     def getPreviewInfo(self):
         #if we are not finish return an empty list
-        if not self.areWeFinish():
+        if not self.areWeDone():
             return []
         allRecipeURL='https://www.allrecipes.com/recipe/'
         recIds=self.getRecipesId()
