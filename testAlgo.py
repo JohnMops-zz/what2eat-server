@@ -13,6 +13,11 @@ yesNo = '/send-yes-or-no'
 yes = json.dumps({"res": "1"})
 no = json.dumps({"res": "0"})
 
+def testTest():
+
+    requests.get(local+'/print1_5')
+    requests.get(local+'/print6_10')
+
 
 def testURL(machine):
     if machine == 'local':
@@ -66,6 +71,8 @@ def testAlgoWithQuestions():
         algo = Algo()
 
 
-testURL('server') # choose if you want server or local machine
-testAlgoWithNoQuestions()
+# testURL('server') # choose if you want server or local machine
+# testAlgoWithNoQuestions()
 # testAlgoWithQuestions()
+
+testTest()

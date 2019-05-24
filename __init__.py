@@ -1,5 +1,6 @@
 import sys
 import os
+from time import sleep
 
 from flask import Flask, request, jsonify, render_template
 
@@ -22,6 +23,18 @@ def restart():
     del algo
     algo = Algo()
     return ""
+
+@app.route('/print1_5',methods=['GET'])
+def print1_5():
+    algo.print1_5()
+    return ""
+
+
+@app.route('/print6_10',methods=['GET'])
+def print6_10():
+    algo.print6_10()
+    return ""
+
 
 @app.route('/send-yes-or-no',methods=['POST'])
 def getYESorNO():

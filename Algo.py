@@ -49,6 +49,18 @@ class Algo():
         self.calcTheNextAtt() # this function update the 'nextAtt' var
         self.lock.release()
 
+    def print1_5(self):
+        for i in range(1,1000):
+            self.lock.acquire()
+            print(threading.get_ident())
+            self.lock.release()
+
+    def print6_10(self):
+        for i in range(1,6):
+            # self.lock.acquire()
+            print(threading.get_ident())
+            # self.lock.release()
+
     def calcGini(self,no, yes):
         return 1 - (yes / self.NUMBER_OF_DISHES) ** 2 - (no / self.NUMBER_OF_DISHES) ** 2
 
