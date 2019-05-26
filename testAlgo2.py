@@ -7,9 +7,11 @@ def testAlgoWithQuestions():
         name = algo.getNextAtt()
         ans = input('got ' + name + '?\n')
         res = {'name':name, 'ans':ans}
+
         x = algo.respond(res)
+        print(x)
         if x:
-            print("finish")
+            print(algo.recPreview())
             break
 
 

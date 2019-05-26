@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 import threading
 import traceback
@@ -119,10 +120,10 @@ class Algo2():
         return self.attsNameArr[self.maxAtt_i]
 
     def getAttImg(self, name):
-        pass
-
-    def getRR(self):
-        pass
+        urlsFile='smallImagesUrl.json'
+        with open(os.path.join(self.__location__,urlsFile),'r') as imagesFile:
+            urls=json.load(imagesFile)
+            return(urls[self.attWithMaxGini])
 
     # ans = {name(the name of the att that was answer), ans(y/n}
     def respond(self, res):
@@ -150,10 +151,13 @@ class Algo2():
                                        self.readSpecificLine(self.maxAtt_i, self.data_file).split(',')]))
                 self.RR = self.AND(self.RR, reverseRow)
                 print("ans is 0 ")
-
-            if res['ans'] == "1":
+            elif res['ans'] == "1":
                 attRow = list(map(int, self.readSpecificLine(self.maxAtt_i, self.data_file).split(',')))
                 self.RR = self.AND(self.RR, attRow)
+
+            else:
+                return "ERROR: the ans is not 1/0"
+
 
             self.relRecsNum=sum(self.RR)
 
@@ -188,5 +192,29 @@ class Algo2():
                 A[i] = 0
         return A
 
+    def getRecipesId(self):
+        recIds=[]
+        for i in range(self.RECS_NUM):
+            if(self.RR[i]):
+                recIds.append(self.recidsArr[i])
+        return recIds
+
     def recPreview(self):
-        return [{},{}]
+
+        #if we are not finish return an empty list
+        if not self.areWeDone():
+            print("ERROR: calling to recPreview before we done")
+            return []
+        allRecipeURL='https://www.allrecipes.com/recipe/'
+        recIds=self.getRecipesId()
+        relJson=[]
+        preFile='recPreview.json'
+        with open(os.path.join(self.__location__, preFile), 'r') as previewFile:
+            for rec in previewFile:
+                recipe=json.loads(rec)
+                rid = str(recipe['id'])
+                recipe['recipeURL']=allRecipeURL+rid
+                for id in recIds:
+                    if rid==id:
+                        relJson.append(recipe)
+        return relJson
