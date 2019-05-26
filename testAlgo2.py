@@ -16,8 +16,8 @@ def testAlgoWithQuestions():
     algo = Algo2()
     while True:
         # print(algo.getNumOfRelevantDishes())
-        name = algo.getNextAtt()["name"]
-        attImgURL=algo.getAttImg(name)
+        name = algo.getAtt()["name"]
+        attImgURL=algo.getAtt()["img"]
         print(attImgURL)
         ans = input('got ' + name +'?\n')
 
@@ -62,5 +62,5 @@ def testURL(machine):
 # x = algo2.getNextAtt()
 # print(x)
 # algo2.respond()
-# testAlgoWithQuestions()
-testURL(local)
+testAlgoWithQuestions()
+# testURL(local)
