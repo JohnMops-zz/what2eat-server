@@ -10,7 +10,7 @@ class Algo2():
     def __init__(self):
         self.lock= threading.Lock()
 
-        self.dataDir="datamock/10recs/"
+        self.dataDir="datamock/1000recs/"
 
         self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -65,16 +65,15 @@ class Algo2():
         self.lock.acquire()
 
         name = self.getNextAtt()
-        #img = self.getAttImg(name)
-        #RR = self.getRR()
+        img = self.getAttImg(name)
+        relRecs = self.relRecsNum
 
         att = {'name':name,
-         #      'img': img,
-         #      'RR': RR
+              'img': img,
+              'relRecs': relRecs
                }
 
         self.lock.release()
-
         return att
 
     def calcGini(self,yes,no):
@@ -131,7 +130,7 @@ class Algo2():
         if not self.ansable:
             print("The algo get respond before calling to getatt")
             return "The algo get respond before calling to getatt"
-        if res['name'] != self.currentAtt:
+        if res["name"] != self.currentAtt:
             print("The respond is out of sync")
             return "The respond is out of sync"
 
@@ -199,7 +198,7 @@ class Algo2():
                 recIds.append(self.recidsArr[i])
         return recIds
 
-    def recPreview(self):
+    def getRecPreview(self):
 
         #if we are not finish return an empty list
         if not self.areWeDone():
@@ -209,7 +208,7 @@ class Algo2():
         recIds=self.getRecipesId()
         relJson=[]
         preFile='recPreview.json'
-        with open(os.path.join(self.__location__, preFile), 'r') as previewFile:
+        with open(os.path.join(self.__location__, preFile), 'r',encoding="utf-8") as previewFile:
             for rec in previewFile:
                 recipe=json.loads(rec)
                 rid = str(recipe['id'])

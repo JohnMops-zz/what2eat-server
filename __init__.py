@@ -6,11 +6,11 @@ from flask import Flask, request, jsonify, render_template
 
 import json
 
-from .Algo import Algo
+from .Algo2 import Algo2
 
 app = Flask(__name__)
 global algo
-algo = Algo()
+algo = Algo2()
 
 
 @app.route('/')
@@ -21,53 +21,38 @@ def index():
 def restart():
     global algo #global algo in order to refer to the global var and not a local one
     del algo
-    algo = Algo()
+    algo = Algo2()
     return ""
-
-@app.route('/print1_5',methods=['GET'])
-def print1_5():
-    algo.print1_5()
-    return ""
-
-
-@app.route('/print6_10',methods=['GET'])
-def print6_10():
-    algo.print6_10()
-    return ""
-
 
 @app.route('/send-yes-or-no',methods=['POST'])
-def getYESorNO():
+def sendYesOrNo():
     data = request.data.decode('utf-8')
 
-    res = json.loads(data)['res']
-    print("server: call to algo.respon with:"+str(res))
-    ans = algo.respon(res)
+    res = json.loads(data)
+    print("server: call to algo.respond with:"+str(res))
+    res = algo.respond(res)
     return jsonify(
-        areWeFinish=ans,
-        numOfRelevantDishes=algo.getNumOfRelevantDishes()
+        areWeDone=res
         ) # return json
 
 @app.route('/get-next-att',methods=['GET'])
-def sendAtt():
-    print("The server send: "+str(algo.getNextAtt()))
-    print(algo.getNumOfRelevantDishes())
+def getNextAtt():
+    attRes=algo.getAtt()
+    name=attRes["name"]
+    relRecs=attRes["relRecs"]
+    attImgUrl=attRes["img"]
+    print("The server sent: "+name)
+    print("Relevant recipes: "+str(relRecs))
     return jsonify(
-        nextAtt=algo.getNextAtt(),
-        numOfRelevantDishes=algo.getNumOfRelevantDishes(),
-        nextAttImage=algo.getAttImage()
+        nextAtt=name,
+        numOfRelevantDishes=relRecs,
+        nextAttImage=attImgUrl
         ) # return json
-
-@app.route('/get-rec-urls',methods=['GET'])
-def getRecUrls():
-    return jsonify(
-        recipesUrls=algo.getRecipesUrls()
-    )
 
 @app.route('/get-preview-info',methods=['GET'])
 def getPreviewInfo():
     return jsonify(
-        recPreviewInfo=algo.getPreviewInfo()
+        recPreviewInfo=algo.getRecPreview()
     )
 
 if __name__ == '__main__':
