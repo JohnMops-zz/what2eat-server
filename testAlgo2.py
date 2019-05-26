@@ -4,7 +4,7 @@ import requests
 
 from Algo2 import Algo2
 
-local = 'http://127.0.0.1'
+local = 'http://127.0.0.1:5000'
 server = 'http://132.145.27.181'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
@@ -15,7 +15,6 @@ yesNo = '/send-yes-or-no'
 def testAlgoWithQuestions():
     algo = Algo2()
     while True:
-        # print(algo.getNumOfRelevantDishes())
         name = algo.getAtt()["name"]
         attImgURL=algo.getAtt()["img"]
         print(attImgURL)
@@ -51,16 +50,11 @@ def testURL(machine):
         name = nextAttRes["nextAtt"]
         yes = json.dumps({"ans": "1", "name":name})
         no =  json.dumps({"ans": "0", "name":name})
-        ryesNo = requests.post(machine + yesNo, no).json()
+        ryesNo = requests.post(machine + yesNo, yes).json()
         print(ryesNo)
 
     rpreview = requests.get(machine + preview).json()
     print(rpreview)
 
-# algo2 = Algo2()
-#
-# x = algo2.getNextAtt()
-# print(x)
-# algo2.respond()
-testAlgoWithQuestions()
-# testURL(local)
+# testAlgoWithQuestions()
+testURL(local)

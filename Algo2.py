@@ -5,7 +5,7 @@ import threading
 import traceback
 
 
-class Algo2():
+class Algo2:
 
     def __init__(self):
         self.lock= threading.Lock()
@@ -110,7 +110,8 @@ class Algo2():
             self.data_file.close()
 
         self.maxAtt_i = self.giniRates.index(max(self.giniRates))
-
+        # turn off the relevant att index
+        self.RA[self.maxAtt_i] = 0
         # update the current att name for sync purposes
         self.currentAtt = self.attsNameArr[self.maxAtt_i]
 
@@ -140,9 +141,6 @@ class Algo2():
         # update the number of the
         self.relAttsNum -= 1
 
-        # turn off the relevant att index
-        self.RA[self.maxAtt_i] = 0
-
         try:
             self.data_file = open(os.path.join(self.__location__, self.dataDir+'data.csv'),encoding="utf-8-sig")
             if res['ans'] == "0":
@@ -167,7 +165,7 @@ class Algo2():
         finally:
             self.data_file.close()
             self.lock.release()
-
+        self.ansable = False
         return self.areWeDone()
 
     def areWeDone(self):
