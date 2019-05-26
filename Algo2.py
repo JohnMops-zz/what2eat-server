@@ -96,8 +96,9 @@ class Algo2():
                         if self.RR[j]:
                             if cell == '0':
                                 no += 1
-                            else: yes += 1
-                            j += 1
+                            else:
+                                yes += 1
+                        j += 1
                     self.giniRates[i] = self.calcGini(yes,no)
                 else:
                     self.giniRates[i] = -1
