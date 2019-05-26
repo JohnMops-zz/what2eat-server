@@ -123,7 +123,7 @@ class Algo2():
         urlsFile='smallImagesUrl.json'
         with open(os.path.join(self.__location__,urlsFile),'r') as imagesFile:
             urls=json.load(imagesFile)
-            return(urls[self.attWithMaxGini])
+            return(urls[self.currentAtt])
 
     # ans = {name(the name of the att that was answer), ans(y/n}
     def respond(self, res):

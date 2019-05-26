@@ -5,7 +5,11 @@ def testAlgoWithQuestions():
     while True:
         # print(algo.getNumOfRelevantDishes())
         name = algo.getNextAtt()
-        ans = input('got ' + name + '?\n')
+        attImgURL=algo.getAttImg(name)
+        print(attImgURL)
+        ans = input('got ' + name +'?\n')
+
+
         res = {'name':name, 'ans':ans}
 
         x = algo.respond(res)
