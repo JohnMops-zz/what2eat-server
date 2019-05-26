@@ -35,6 +35,7 @@ def testURL(machine):
         if machine == 'server':
             machine = server
 
+    requests.get(machine + restart)
     nextAttRes = requests.get(machine + nextAtt).json()
     print(nextAttRes)
     name=nextAttRes["nextAtt"]
