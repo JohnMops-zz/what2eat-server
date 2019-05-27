@@ -1,5 +1,6 @@
 import sys
 import os
+import threading
 from time import sleep
 
 from flask import Flask, request, jsonify, render_template
@@ -9,20 +10,32 @@ import json
 from .Algo2 import Algo2
 
 app = Flask(__name__)
-global algo
-algo = Algo2()
+# global algo
+algos = dict()
 
 
+
+app.secret_key = b'c045d810b013778ed082e2befeb9b51e'
 @app.route('/')
 def index():
       return render_template('page.html')
 
-@app.route('/restart-algo',methods=['GET'])
-def restart():
-    global algo #global algo in order to refer to the global var and not a local one
-    del algo
+# @app.route('/restart-algo',methods=['GET'])
+# def restart():
+#     global algo #global algo in order to refer to the global var and not a local one
+#     del algo
+#     algo = Algo2()
+#     return ""
+
+@app.route('/run-algo',methods=['GET'])
+def runAlgo():
+    print("inside Run-algo")
     algo = Algo2()
-    return ""
+    algos[id(algo)]=algo
+    return jsonify(
+        algoId=id(algo)
+        ) # return json
+
 
 @app.route('/send-yes-or-no',methods=['POST'])
 def sendYesOrNo():
@@ -30,29 +43,48 @@ def sendYesOrNo():
 
     res = json.loads(data)
     print("server: call to algo.respond with:"+str(res))
-    res = algo.respond(res)
+    algoId=res["algoId"]
+    resp = algos[algoId].respond(res)
     return jsonify(
-        areWeDone=res
+        areWeDone=resp
         ) # return json
 
-@app.route('/get-next-att',methods=['GET'])
+@app.route('/get-next-att',methods=['POST'])
 def getNextAtt():
-    attRes=algo.getAtt()
+    
+    data = request.data.decode('utf-8')
+    res = json.loads(data)
+
+    algoId = res["algoId"]
+    if algoId in algos:
+        attRes=algos[algoId].getAtt()
+        print("str(algos)="+str(algos)+" "+str(id(algos)))
+    else:
+        raise Exception('Key-ERR'+str(algos)+" "+str(algoId)+" "+str(id(algos)))
+
     name=attRes["name"]
     relRecs=attRes["relRecs"]
     attImgUrl=attRes["img"]
     print("The server sent: "+name)
     print("Relevant recipes: "+str(relRecs))
+
     return jsonify(
         nextAtt=name,
         numOfRelevantDishes=relRecs,
         nextAttImage=attImgUrl
         ) # return json
 
-@app.route('/get-preview-info',methods=['GET'])
+@app.route('/get-preview-info',methods=['POST'])
 def getPreviewInfo():
+    
+    data = request.data.decode('utf-8')
+    res = json.loads(data)
+    algoId = res["algoId"]
+    recPreview=algos[algoId].getRecPreview()
+    print("deleting algo obj with id "+str(algoId))
+    del algos[algoId]
     return jsonify(
-        recPreviewInfo=algo.getRecPreview()
+        recPreviewInfo=recPreview
     )
 
 if __name__ == '__main__':
