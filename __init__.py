@@ -6,7 +6,6 @@ from time import sleep
 from flask import Flask, request, jsonify, render_template
 
 import json
-
 from .Algo2 import Algo2
 
 app = Flask(__name__)
@@ -14,18 +13,9 @@ app = Flask(__name__)
 algos = dict()
 
 
-
-app.secret_key = b'c045d810b013778ed082e2befeb9b51e'
 @app.route('/')
 def index():
       return render_template('page.html')
-
-# @app.route('/restart-algo',methods=['GET'])
-# def restart():
-#     global algo #global algo in order to refer to the global var and not a local one
-#     del algo
-#     algo = Algo2()
-#     return ""
 
 @app.route('/run-algo',methods=['GET'])
 def runAlgo():
@@ -89,5 +79,5 @@ def getPreviewInfo():
 
 if __name__ == '__main__':
 
-    app.run(host='127.0.0.1',port='80')
+    app.run()
     # app.run(host='10.200.203.231',port=5005)

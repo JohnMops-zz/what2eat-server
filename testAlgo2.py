@@ -5,8 +5,8 @@ import requests
 
 from Algo2 import Algo2
 
-local = 'http://127.0.0.1'
-server = 'http://132.145.27.181'
+local = 'http://127.0.0.1:5000'
+server = 'http://132.145.27.181:5000'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
 restart = '/restart-algo'
@@ -37,7 +37,6 @@ def testURL(machine):
         if machine == 'server':
             machine = server
 
-
     jalgoId=requests.get(machine + runAlgo).json()
     algoId=jalgoId['algoId']
     nextAttRes = requests.post(machine + nextAtt,json=jalgoId).json()
@@ -48,16 +47,15 @@ def testURL(machine):
     no = json.dumps({"ans": "0", "name": name,'algoId':algoId})
     ryesNo = requests.post(machine + yesNo, yes).json()
     print(yes)
-    print(ryesNo)
 
     while ryesNo['areWeDone'] == False:
         nextAttRes = requests.post(machine + nextAtt, json=jalgoId).json()
-        print(nextAttRes)
         name = nextAttRes["nextAtt"]
         yes = json.dumps({"ans": "1", "name": name, 'algoId': algoId})
         no = json.dumps({"ans": "0", "name": name, 'algoId': algoId})
-        ryesNo = requests.post(machine + yesNo, no).json()
-        print(ryesNo)
+        ryesNo = requests.post(machine + yesNo, yes).json()
+        print(yes)
+        print(nextAttRes)
 
     rpreview = requests.post(machine + preview,json=jalgoId).json()
     print(rpreview)
@@ -97,5 +95,5 @@ def testURLwithQuestions(machine):
 
 
 # testAlgoWithQuestions()
-# testURL('local')
-testURLwithQuestions('local')
+testURL('local')
+# testURLwithQuestions('local')
