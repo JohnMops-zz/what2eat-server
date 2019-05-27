@@ -5,7 +5,7 @@ import requests
 
 from Algo2 import Algo2
 
-local = 'http://127.0.0.1:5000'
+local = 'http://127.0.0.1'
 server = 'http://132.145.27.181'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
@@ -56,7 +56,7 @@ def testURL(machine):
         name = nextAttRes["nextAtt"]
         yes = json.dumps({"ans": "1", "name": name, 'algoId': algoId})
         no = json.dumps({"ans": "0", "name": name, 'algoId': algoId})
-        ryesNo = requests.post(machine + yesNo, json=yes).json()
+        ryesNo = requests.post(machine + yesNo, no).json()
         print(ryesNo)
 
     rpreview = requests.post(machine + preview,json=jalgoId).json()
@@ -97,5 +97,5 @@ def testURLwithQuestions(machine):
 
 
 # testAlgoWithQuestions()
-testURL('local')
-# testURLwithQuestions('local')
+# testURL('local')
+testURLwithQuestions('local')

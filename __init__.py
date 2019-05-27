@@ -1,5 +1,6 @@
 import sys
 import os
+import threading
 from time import sleep
 
 from flask import Flask, request, jsonify, render_template
@@ -13,6 +14,8 @@ app = Flask(__name__)
 algos = dict()
 
 
+
+app.secret_key = b'c045d810b013778ed082e2befeb9b51e'
 @app.route('/')
 def index():
       return render_template('page.html')
@@ -48,7 +51,7 @@ def sendYesOrNo():
 
 @app.route('/get-next-att',methods=['POST'])
 def getNextAtt():
-
+    
     data = request.data.decode('utf-8')
     res = json.loads(data)
 
@@ -57,13 +60,14 @@ def getNextAtt():
         attRes=algos[algoId].getAtt()
         print("str(algos)="+str(algos)+" "+str(id(algos)))
     else:
-        raise Exception('Key-ERR'+str(algos)+" "+str(algoId)+str(id(algos)))
+        raise Exception('Key-ERR'+str(algos)+" "+str(algoId)+" "+str(id(algos)))
 
     name=attRes["name"]
     relRecs=attRes["relRecs"]
     attImgUrl=attRes["img"]
     print("The server sent: "+name)
     print("Relevant recipes: "+str(relRecs))
+
     return jsonify(
         nextAtt=name,
         numOfRelevantDishes=relRecs,
@@ -72,6 +76,7 @@ def getNextAtt():
 
 @app.route('/get-preview-info',methods=['POST'])
 def getPreviewInfo():
+    
     data = request.data.decode('utf-8')
     res = json.loads(data)
     algoId = res["algoId"]
