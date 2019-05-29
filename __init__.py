@@ -32,7 +32,7 @@ def sendYesOrNo():
     data = request.data.decode('utf-8')
 
     res = json.loads(data)
-    print("server: call to algo.respond with:"+str(res))
+    print("server: call to respond with: "+str(res))
     algoId=res["algoId"]
     resp = algos[algoId].respond(res)
     return jsonify(
@@ -50,7 +50,7 @@ def getNextAtt():
         attRes=algos[algoId].getAtt()
         print("str(algos)="+str(algos)+" "+str(id(algos)))
     else:
-        raise Exception('Key-ERR'+str(algos)+" "+str(algoId)+" "+str(id(algos)))
+        raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
 
     name=attRes["name"]
     relRecs=attRes["relRecs"]
@@ -70,14 +70,28 @@ def getPreviewInfo():
     data = request.data.decode('utf-8')
     res = json.loads(data)
     algoId = res["algoId"]
-    recPreview=algos[algoId].getRecPreview()
-    print("deleting algo obj with id "+str(algoId))
-    del algos[algoId]
-    return jsonify(
-        recPreviewInfo=recPreview
-    )
+    if algoId in algos:
+        recPreview=algos[algoId].getRecPreview()
+        print("deleting algo obj with id "+str(algoId))
+        del algos[algoId]
+        return jsonify(
+            recPreviewInfo=recPreview
+        )
+    else:
+        raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
+
+@app.route('/del-algo',methods=['POST'])
+def delAlgo():
+    data = request.data.decode('utf-8')
+    res = json.loads(data)
+    algoId = res["algoId"]
+    if algoId in algos:
+        del algos[algoId]
+        return "Algo Id {} was deleted".format(algoId)
+    else:
+        raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
+
 
 if __name__ == '__main__':
-
     app.run()
     # app.run(host='10.200.203.231',port=5005)
