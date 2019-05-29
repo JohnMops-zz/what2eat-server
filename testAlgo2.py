@@ -95,5 +95,5 @@ def testURLwithQuestions(machine):
 
 
 # testAlgoWithQuestions()
-testURL('local')
+testURL('server')
 # testURLwithQuestions('local')

@@ -38,7 +38,7 @@ class Algo2:
         finally:
             self.recids_file.close()
 
-        self.RECS_THRESHOLD=2
+        self.RECS_THRESHOLD=5
         self.ATTS_NUM=len(self.attsNameArr)
         self.RECS_NUM=len(self.recidsArr)
 
