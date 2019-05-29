@@ -50,7 +50,7 @@ def getNextAtt():
     algoId = res["algoId"]
     if algoId in algos:
         attRes=algos[algoId].getAtt()
-        print("str(algos)="+str(algos)+" "+str(id(algos)))
+        print("algos={algos}".format(algos=algos))
     else:
         raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
 
@@ -74,7 +74,7 @@ def getPreviewInfo():
     algoId = res["algoId"]
     if algoId in algos:
         recPreview=algos[algoId].getRecPreview()
-        print("deleting algo obj with id "+str(algoId))
+        print("Algo Id {algoId} was deleted, {algos} are left".format(algoId=algoId,algos=algos))
         del algos[algoId]
         return jsonify(
             recPreviewInfo=recPreview
