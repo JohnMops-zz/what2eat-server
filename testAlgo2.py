@@ -5,8 +5,8 @@ import requests
 
 from Algo2 import Algo2
 
-local = 'http://127.0.0.1:5000'
-server = 'http://132.145.27.181:5000'
+local = 'http://127.0.0.1'
+server = 'http://132.145.27.181'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
 restart = '/restart-algo'
