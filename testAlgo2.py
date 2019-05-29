@@ -38,21 +38,21 @@ def testURL(machine):
             machine = server
 
     jalgoId=requests.get(machine + runAlgo).json()
-    algoId=jalgoId['algoId']
+    algoId=jalgoId["algoId"]
     nextAttRes = requests.post(machine + nextAtt,json=jalgoId).json()
 
     print(nextAttRes)
     name=nextAttRes["nextAtt"]
-    yes = json.dumps({"ans": "1", "name":name,'algoId':algoId})
-    no = json.dumps({"ans": "0", "name": name,'algoId':algoId})
+    yes = json.dumps({"ans": "1", "name":name,"algoId":algoId})
+    no = json.dumps({"ans": "0", "name": name,"algoId":algoId})
     ryesNo = requests.post(machine + yesNo, yes).json()
     print(yes)
 
     while ryesNo['areWeDone'] == False:
         nextAttRes = requests.post(machine + nextAtt, json=jalgoId).json()
         name = nextAttRes["nextAtt"]
-        yes = json.dumps({"ans": "1", "name": name, 'algoId': algoId})
-        no = json.dumps({"ans": "0", "name": name, 'algoId': algoId})
+        yes = json.dumps({"ans": "1", "name": name, "algoId": algoId})
+        no = json.dumps({"ans": "0", "name": name, "algoId": algoId})
         ryesNo = requests.post(machine + yesNo, yes).json()
         print(yes)
         print(nextAttRes)
@@ -69,13 +69,13 @@ def testURLwithQuestions(machine):
             machine = server
 
     jalgoId=requests.get(machine + runAlgo).json()
-    algoId=jalgoId['algoId']
+    algoId=jalgoId["algoId"]
 
     nextAttRes = requests.post(machine + nextAtt,json=jalgoId).json()
     print(nextAttRes)
     name=nextAttRes["nextAtt"]
     ans = input('got ' + name +'?\n')
-    res = json.dumps({"ans": ans, "name":name,'algoId':algoId})
+    res = json.dumps({"ans": ans, "name":name,"algoId":algoId})
 
     ryesNo = requests.post(machine + yesNo, res).json()
     print(res)
@@ -86,7 +86,7 @@ def testURLwithQuestions(machine):
         print(nextAttRes)
         name = nextAttRes["nextAtt"]
         ans = input('got ' + name + '?\n')
-        res = json.dumps({"ans": ans, "name": name, 'algoId': algoId})
+        res = json.dumps({"ans": ans, "name": name, "algoId": algoId})
         ryesNo = requests.post(machine + yesNo, res).json()
         print(ryesNo)
 
@@ -94,6 +94,7 @@ def testURLwithQuestions(machine):
     print(rpreview)
 
 
+
 # testAlgoWithQuestions()
-testURL('server')
+testURL('local')
 # testURLwithQuestions('local')
