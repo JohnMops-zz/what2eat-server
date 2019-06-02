@@ -5,8 +5,8 @@ import requests
 
 from Algo2 import Algo2
 
-local = 'http://127.0.0.1'
-server = 'http://132.145.27.181'
+local = 'http://127.0.0.1:8080'
+server = 'http://195.201.119.146:8080'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
 restart = '/restart-algo'
@@ -64,9 +64,11 @@ def testURL(machine):
 def testURLwithQuestions(machine):
     if machine == 'local':
         machine = local
+    elif machine == 'server':
+        machine = server
     else:
-        if machine == 'server':
-            machine = server
+        print("please enter server or local and not {}".format(machine))
+        return
 
     jalgoId=requests.get(machine + runAlgo).json()
     algoId=jalgoId["algoId"]
@@ -96,5 +98,5 @@ def testURLwithQuestions(machine):
 
 
 # testAlgoWithQuestions()
-testURL('server')
-# testURLwithQuestions('local')
+testURL('local')
+# testURLwithQuestions('server')

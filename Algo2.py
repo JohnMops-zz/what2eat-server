@@ -181,14 +181,17 @@ class Algo2:
         return "ERROR: LINE #" + str(lineNumber) + " DOESN'T FOUND"
 
     # AND operator that work with 2 arrays
-    def AND(self,A, B):
-        leng = len(A)
-        for i in range(0, leng):
-            if A[i] == 1 & B[i] == 1:
-                A[i] = 1
-            else:
-                A[i] = 0
-        return A
+    # def AND(self,A, B):
+    #     leng = len(A)
+    #     for i in range(0, leng):
+    #         if A[i] == 1 & B[i] == 1:
+    #             A[i] = 1
+    #         else:
+    #             A[i] = 0
+    #     return A
+
+    def AND(self,a,b):
+        return [x & y for (x, y) in zip(a, b)]
 
     def getRecipesId(self):
         recIds=[]

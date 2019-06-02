@@ -26,7 +26,11 @@ def runAlgo():
         return jsonify(
             algoId=id(algo)
             ) # return json
-    else: return 'only 4 algos are allowed, please delete some: {algos}'.format(algos=algos)
+    else:
+        msg='only 4 algos are allowed, please delete some: {algos}'.format(algos=algos)
+        return jsonify(
+            msg=msg
+        )
 
 
 @app.route('/send-yes-or-no',methods=['POST'])
@@ -89,7 +93,10 @@ def delAlgo():
     algoId = res["algoId"]
     if algoId in algos:
         del algos[algoId]
-        return "Algo Id {algoId} was deleted, {algos} are left".format(algoId=algoId,algos=algos)
+        msg="Algo Id {algoId} was deleted, {algos} are left".format(algoId=algoId,algos=algos)
+        return jsonify(
+            msg=msg
+        )
     else:
         raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
 
