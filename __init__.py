@@ -6,7 +6,10 @@ from time import sleep
 from flask import Flask, request, jsonify, render_template
 
 import json
-from .Algo2 import Algo2
+try:
+    from .Algo2 import Algo2
+except:
+    from Algo2 import Algo2
 
 app = Flask(__name__)
 # global algo
@@ -21,13 +24,16 @@ def index():
 def runAlgo():
     print("inside Run-algo")
     algo = Algo2()
+    algosIds = [key for key in algos.keys()]
     if len(algos)<4:
         algos[id(algo)]=algo
+        algosIds = [key for key in algos.keys()]
         return jsonify(
-            algoId=id(algo)
+            algoId=id(algo),
+            algos=algosIds
             ) # return json
     else:
-        msg='only 4 algos are allowed, please delete some: {algos}'.format(algos=algos)
+        msg='only 4 algos are allowed, please delete some: {algos}'.format(algos=algosIds)
         return jsonify(
             msg=msg
         )
@@ -50,11 +56,11 @@ def getNextAtt():
     
     data = request.data.decode('utf-8')
     res = json.loads(data)
-
+    algosIds = [key for key in algos.keys()]
     algoId = res["algoId"]
     if algoId in algos:
         attRes=algos[algoId].getAtt()
-        print("algos={algos}".format(algos=algos))
+        print("algos={algos}".format(algos=algosIds))
     else:
         raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
 
@@ -91,14 +97,16 @@ def delAlgo():
     data = request.data.decode('utf-8')
     res = json.loads(data)
     algoId = res["algoId"]
+    algosIds = [key for key in algos.keys()]
     if algoId in algos:
         del algos[algoId]
-        msg="Algo Id {algoId} was deleted, {algos} are left".format(algoId=algoId,algos=algos)
+        algosIds = [key for key in algos.keys()]
+        msg="Algo Id {algoId} was deleted, {algos} are left".format(algoId=algoId,algos=algosIds)
         return jsonify(
             msg=msg
         )
     else:
-        raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algos))
+        raise Exception('Key-ERR {algoId} - couldn\'t find such Algo id in {algos}'.format(algoId=algoId,algos=algosIds))
 
 
 if __name__ == '__main__':

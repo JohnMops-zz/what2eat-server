@@ -6,7 +6,7 @@ import requests
 from Algo2 import Algo2
 
 local = 'http://127.0.0.1:8080'
-server = 'http://195.201.119.146:8080'
+server = 'http://195.201.119.146'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
 restart = '/restart-algo'
@@ -98,5 +98,5 @@ def testURLwithQuestions(machine):
 
 
 # testAlgoWithQuestions()
-testURL('local')
+testURL('server')
 # testURLwithQuestions('server')
