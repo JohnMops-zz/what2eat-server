@@ -6,7 +6,7 @@ import requests
 from Algo2 import Algo2
 
 local = 'http://127.0.0.1:8080'
-server = 'http://195.201.119.146'
+server = 'https://www.what2eat.ml'
 preview = '/get-preview-info'
 nextAtt = '/get-next-att'
 restart = '/restart-algo'
@@ -52,7 +52,7 @@ def testURL(machine):
         name = nextAttRes["nextAtt"]
         yes = json.dumps({"ans": "1", "name": name, "algoId": algoId})
         no = json.dumps({"ans": "0", "name": name, "algoId": algoId})
-        ryesNo = requests.post(machine + yesNo, no).json()
+        ryesNo = requests.post(machine + yesNo, yes).json()
         print(yes)
         print(nextAttRes)
 
