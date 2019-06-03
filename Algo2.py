@@ -3,14 +3,14 @@ import json
 import os
 import threading
 import traceback
-
+from decimal import Decimal
 
 class Algo2:
 
     def __init__(self):
         self.lock= threading.Lock()
 
-        self.dataDir="datamock/1000recs/"
+        self.dataDir="datamock/2500recs/"
 
         self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -18,7 +18,7 @@ class Algo2:
         try:
             self.data_file = open(os.path.join(self.__location__, self.dataDir+'data.csv'))
         except:
-            print("cant find data.csv file")
+            Exception("cant read/find data.csv file at "+os.path.join(self.__location__, self.dataDir+'data.csv'))
         finally:
             self.data_file.close()
 
@@ -26,7 +26,7 @@ class Algo2:
             self.attsName_file = open(os.path.join(self.__location__, self.dataDir+'attsName.csv'))
             self.attsNameArr = self.attsName_file.readline().split(',')
         except:
-            print("cant find attsName.csv file")
+            Exception("cant read/find attsName.csv file at "+os.path.join(self.__location__, self.dataDir+'attsName.csv'))
         finally:
             self.attsName_file.close()
 
@@ -34,7 +34,7 @@ class Algo2:
             self.recids_file = open(os.path.join(self.__location__, self.dataDir+'recids.csv'))
             self.recidsArr = self.recids_file.readline().split(',')
         except:
-            print("cant find recids.csv file")
+            Exception("cant read/find recids.csv file at " + os.path.join(self.__location__, self.dataDir + 'recids.csv'))
         finally:
             self.recids_file.close()
 
@@ -77,7 +77,8 @@ class Algo2:
         return att
 
     def calcGini(self,yes,no):
-        return 1 - (yes / self.relRecsNum) ** 2 - (no / self.relRecsNum) ** 2
+        x=Decimal(1 - (yes / self.relRecsNum) ** 2 - (no / self.relRecsNum) ** 2)
+        return round(x,3) # rounding to first 3 digits
 
     # logical calculations
     def getNextAtt(self):

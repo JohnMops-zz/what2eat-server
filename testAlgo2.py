@@ -17,13 +17,12 @@ runAlgo='/run-algo'
 def testAlgoWithQuestions():
     algo = Algo2()
     while True:
-        name = algo.getAtt()["name"]
-        attImgURL=algo.getAtt()["img"]
+        att=algo.getAtt()
+        name = att["name"]
+        attImgURL=att["img"]
         print(attImgURL)
         ans = input('got ' + name +'?\n')
-
         res = {'name':name, 'ans':ans}
-
         x = algo.respond(res)
         print(x)
         if x:
@@ -53,7 +52,7 @@ def testURL(machine):
         name = nextAttRes["nextAtt"]
         yes = json.dumps({"ans": "1", "name": name, "algoId": algoId})
         no = json.dumps({"ans": "0", "name": name, "algoId": algoId})
-        ryesNo = requests.post(machine + yesNo, yes).json()
+        ryesNo = requests.post(machine + yesNo, no).json()
         print(yes)
         print(nextAttRes)
 
@@ -96,7 +95,8 @@ def testURLwithQuestions(machine):
     print(rpreview)
 
 
-
 # testAlgoWithQuestions()
 testURL('server')
+# testURL('local')
 # testURLwithQuestions('server')
+# testURLwithQuestions('local')
