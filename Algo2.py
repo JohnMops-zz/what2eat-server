@@ -10,7 +10,7 @@ class Algo2:
     def __init__(self):
         self.lock= threading.Lock()
 
-        self.dataDir="datamock/2500recs/"
+        self.dataDir="datamock/every5/"
 
         self.__location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -210,12 +210,11 @@ class Algo2:
         allRecipeURL='https://www.allrecipes.com/recipe/'
         recIds=self.getRecipesId()
         relJson=[]
-        preFile='recPreview.json'
+        preFile='recPreview5.json'
         with open(os.path.join(self.__location__, preFile), 'r',encoding="utf-8") as previewFile:
             for rec in previewFile:
                 recipe=json.loads(rec)
                 rid = str(recipe['id'])
-                recipe['recipeURL']=allRecipeURL+rid
                 for id in recIds:
                     if rid==id:
                         relJson.append(recipe)

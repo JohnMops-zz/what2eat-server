@@ -43,7 +43,7 @@ def recJSONtoIngCSV(path):
             ing_dict_writer.writerow(rec_rows)
             rec_i += 1
 
-recJSONtoIngCSV("2500recipes.json")
+recJSONtoIngCSV("every5.json")
 
 
 # def what2ask(path):

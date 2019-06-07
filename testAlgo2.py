@@ -20,7 +20,9 @@ def testAlgoWithQuestions():
         att=algo.getAtt()
         name = att["name"]
         attImgURL=att["img"]
+        relRecs=att["relRecs"]
         print(attImgURL)
+        print(relRecs)
         ans = input('got ' + name +'?\n')
         res = {'name':name, 'ans':ans}
         x = algo.respond(res)
@@ -52,7 +54,7 @@ def testURL(machine):
         name = nextAttRes["nextAtt"]
         yes = json.dumps({"ans": "1", "name": name, "algoId": algoId})
         no = json.dumps({"ans": "0", "name": name, "algoId": algoId})
-        ryesNo = requests.post(machine + yesNo, yes).json()
+        ryesNo = requests.post(machine + yesNo, no).json()
         print(yes)
         print(nextAttRes)
 
@@ -96,7 +98,7 @@ def testURLwithQuestions(machine):
 
 
 # testAlgoWithQuestions()
-testURL('server')
+# testURL('server')
 # testURL('local')
 # testURLwithQuestions('server')
-# testURLwithQuestions('local')
+testURLwithQuestions('local')

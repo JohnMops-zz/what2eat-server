@@ -4,6 +4,38 @@ from time import sleep
 from google_images_download import google_images_download
 from recipe_scrapers import scrape_me
 
+def getPreviewData():
+    allrecipesUrl = "https://www.allrecipes.com/recipe/"
+    rec_i = 1
+    sugDesc = ['Good stuff!', 'A wonderful recipe for kids and adults', 'Very Yummy recipe','Very easy, good and tasty', 'I make this recipe every night and day',"Everyone's favorite!","A yummy and traditional addition to any feast.","This recipe was graciously shared with me by a Jamaican friend, many years ago.","This is a great recipe my mom got from my aunt.","This is the best fresh recipe I have."]
+    googres = google_images_download.googleimagesdownload()
+
+    with open ('datamock/every5/every5.json', 'r',encoding="utf-8") as readfile:
+        for line in readfile:
+            jsonRec = {}
+            rec = json.loads(line)
+            id=rec["id"]
+            title=rec["name"]
+            title = title.replace(',','')
+
+            googres = google_images_download.googleimagesdownload()
+            print(googres)
+            images = googres.download({'keywords': title, 'limit': '1', 'no_download': 'True', 'silent_mode': 'True'})
+            img = images[0][title][0]
+            desc=random.choice(sugDesc)
+            link=allrecipesUrl+str(id)
+
+            jsonRec["id"]=id
+            jsonRec["title"]=title
+            jsonRec["img"] = img
+            jsonRec["desc"] = desc
+            jsonRec["link"] = link
+            with open('recPreview5.json', 'a+') as writefile:
+                writefile.write(json.dumps(jsonRec) + '\n')
+                print(jsonRec)
+
+# getPreviewData()
+
 def scrapeit():
     # give the url as a string, it can be url from any site listed below
     allrecipesUrl="https://www.allrecipes.com/recipe/"
@@ -64,7 +96,7 @@ def ingImageUrl():
             with open('smallImagesUrl1.json','a') as imageFile:
                 imageFile.write(json.dumps(jsonIng))
 
-def addRecURL():
+# def addRecURL():
 
 
 
